@@ -29,5 +29,9 @@ public enum Hint {
   HTML, 
   TASK_NAME, 
   CASE_NAME_TEMPLATE,
-  TO_TEXT
+  TO_TEXT,
+
+  //zhenghaibo 2018.4.8
+  ASSIGNEE_ID,
+  ROLE_ID
   }

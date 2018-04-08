@@ -48,7 +48,10 @@ import com.effektif.workflow.api.types.DataType;
  * @author Tom Baeyens
  */
 public class ExecutableWorkflow extends AbstractWorkflow {
-  
+
+  //zhenghaibo 2018.4.8
+  private static final long serialVersionUID = -6593594361344639907L;
+
   /** @see #sourceWorkflowId(String) */
   protected String sourceWorkflowId;
   protected LocalDateTime createTime;
@@ -98,6 +101,9 @@ public class ExecutableWorkflow extends AbstractWorkflow {
     w.writeStringValue("sourceWorkflowId", "value", sourceWorkflowId);
     w.writeStringValue("creatorId", "value", creatorId);
     w.writeStringValue("enableCases", "value", enableCases);
+
+    //zhenghaibo 2018.4.8
+    w.writeStringValue("createTime", "value", createTime);
 
     if (createTime != null) {
       w.startElementEffektif("createTime");

@@ -36,6 +36,10 @@ public class MongoConfiguration extends DefaultConfiguration {
   protected List<MongoCredential> credentials;
   protected String workflowsCollectionName = "workflows";
   protected String workflowInstancesCollectionName = "workflowInstances";
+
+  //zhenghaibo 2018.4.8
+  protected String tasksCollectionName = "tasks";
+
   protected String jobsCollectionName = "jobs";
   protected String jobsArchivedCollectionName = "jobsArchived";
   protected String typeCollectionName = "types";
@@ -54,6 +58,9 @@ public class MongoConfiguration extends DefaultConfiguration {
     brewery.ingredient(new MongoWorkflowInstanceStore());
     brewery.ingredient(new MongoJobStore());
     brewery.ingredient(new MongoObjectMappingsBuilder());
+
+    //zhenghaibo 2018.4.8
+    brewery.ingredient(new MongoTaskStore());
   }
   
   public MongoConfiguration db(DB db) {
@@ -243,6 +250,14 @@ public class MongoConfiguration extends DefaultConfiguration {
   public MongoConfiguration ingredient(Object ingredient) {
     super.ingredient(ingredient);
     return this;
+  }
+
+  public String getTasksCollectionName() {
+    return tasksCollectionName;
+  }
+
+  public void setTasksCollectionName(String tasksCollectionName) {
+    this.tasksCollectionName = tasksCollectionName;
   }
 
 }

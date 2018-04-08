@@ -15,8 +15,6 @@
  */
 package com.effektif.workflow.impl.workflow;
 
-import java.util.List;
-
 import com.effektif.workflow.api.model.WorkflowId;
 import com.effektif.workflow.api.workflow.AbstractWorkflow;
 import com.effektif.workflow.api.workflow.Trigger;
@@ -24,7 +22,8 @@ import com.effektif.workflow.impl.WorkflowEngineImpl;
 import com.effektif.workflow.impl.WorkflowParser;
 import com.effektif.workflow.impl.activity.AbstractTriggerImpl;
 import com.effektif.workflow.impl.activity.ActivityTypeService;
-import com.effektif.workflow.impl.workflowinstance.WorkflowInstanceImpl;
+
+import java.util.List;
 
 
 /**
@@ -39,6 +38,9 @@ public class WorkflowImpl extends ScopeImpl {
   public List<ActivityImpl> startActivities;
   public AbstractTriggerImpl trigger;
   public boolean enableCases;
+
+  //zhenghaibo 2018.4.8
+  public String description;
   
   public WorkflowImpl() {
   }
@@ -90,5 +92,10 @@ public class WorkflowImpl extends ScopeImpl {
 
   public String getName() {
     return name;
+  }
+
+  //zhenghaibo 2018.4.8
+  public String getDescription() {
+    return description;
   }
 }

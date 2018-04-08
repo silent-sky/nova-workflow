@@ -22,7 +22,7 @@ import com.effektif.workflow.impl.bpmn.BpmnMapper;
 import com.effektif.workflow.impl.bpmn.BpmnMapperSupplier;
 import com.effektif.workflow.impl.configuration.Brewery;
 import com.effektif.workflow.impl.data.DataTypeService;
-import com.effektif.workflow.impl.job.JobServiceImpl;
+import com.effektif.workflow.impl.ext.TaskFactory;
 import com.effektif.workflow.impl.job.TimerTypeService;
 import com.effektif.workflow.impl.json.JavaBeanValueMapper;
 import com.effektif.workflow.impl.json.JsonStreamMapper;
@@ -36,7 +36,7 @@ import com.effektif.workflow.impl.json.configuration.JsonStreamMappingsBuilder;
 public abstract class DefaultConfiguration implements Configuration {
 
   protected Brewery brewery;
-  
+
   public DefaultConfiguration() {
     brewery = new Brewery();
     brewery.ingredient(this);
@@ -45,12 +45,15 @@ public abstract class DefaultConfiguration implements Configuration {
     brewery.ingredient(new SimpleWorkflowCache());
     brewery.ingredient(new AsynchronousExecutorService());
     brewery.ingredient(new ConditionServiceImpl());
-    brewery.ingredient(new JobServiceImpl());
+//    brewery.ingredient(new JobServiceImpl());
     brewery.ingredient(new ActivityTypeService());
     brewery.ingredient(new DataTypeService());
     brewery.ingredient(new TimerTypeService());
     brewery.ingredient(new JsonStreamMappingsBuilder());
     brewery.ingredient(new JavaBeanValueMappingsBuilder());
+
+    //zhenghaibo 2018.4.8
+    brewery.ingredient(new TaskFactory());
 
     brewery.supplier(new JsonStreamMapperSupplier(), JsonStreamMapper.class);
     brewery.supplier(new JavaBeanValueMapperSupplier(), JavaBeanValueMapper.class);
@@ -75,7 +78,7 @@ public abstract class DefaultConfiguration implements Configuration {
   public Brewery getBrewery() {
     return brewery;
   }
-  
+
   public void setBrewery(Brewery brewery) {
     this.brewery = brewery;
   }
@@ -90,7 +93,7 @@ public abstract class DefaultConfiguration implements Configuration {
   public Object get(String name) {
     return brewery.get(name);
   }
-  
+
   @Override
   public void set(Object bean, String name) {
     brewery.ingredient(bean, name);

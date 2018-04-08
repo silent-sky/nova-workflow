@@ -147,6 +147,11 @@ public class WorkflowEngineImpl implements WorkflowEngine, Brewable {
 
     if (log.isDebugEnabled()) log.debug("Created "+workflowInstance);
 
+    //zhenghaibo 2018.4.8
+    if (triggerInstance.getTransientData() != null && triggerInstance.getTransientData().size() > 0) {
+      workflowInstance.setTransientProperties(triggerInstance.getTransientData());
+    }
+
     if (workflow.trigger!=null) {
       workflow.trigger.applyTriggerData(workflowInstance, triggerInstance);
     } else {

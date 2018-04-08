@@ -241,6 +241,11 @@ public class MongoWorkflowInstanceStore implements WorkflowInstanceStore, Brewab
       dbQuery.append(_ID, new ObjectId(query.getWorkflowInstanceId().getInternal()));
     }
 
+    //zhenghaibo 2018.4.8
+    if (query.getWorkflowId() != null) {
+      dbQuery.append(WorkflowInstanceFields.WORKFLOW_ID, new ObjectId((query.getWorkflowId().getInternal())));
+    }
+
     if (query.getActivityId() != null) {
       dbQuery.append(ACTIVITY_INSTANCES
               , new BasicDBObject("$elemMatch", new BasicDBObject(ACTIVITY_ID, query.getActivityId())
@@ -357,6 +362,14 @@ public class MongoWorkflowInstanceStore implements WorkflowInstanceStore, Brewab
 
   public BasicDBObject writeWorkflowInstance(WorkflowInstanceImpl workflowInstance) {
     BasicDBObject dbWorkflowInstance = mongoMapper.write(workflowInstance.toWorkflowInstance(true));
+
+    //zhenghaibo 2018.4.8
+    Map<String, Object> bindingMap = workflowInstance.getTransientProperties();
+    if (bindingMap != null && bindingMap.size() > 0) {
+      dbWorkflowInstance.putAll(bindingMap);
+    }
+    dbWorkflowInstance.put("execution",workflowInstance.getExecution());
+
     if (storeWorkflowIdsAsStrings) {
       writeString(dbWorkflowInstance, WORKFLOW_ID, workflowInstance.workflow.id.getInternal());
     }

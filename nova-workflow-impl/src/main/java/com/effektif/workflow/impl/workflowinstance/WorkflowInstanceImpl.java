@@ -17,6 +17,8 @@ package com.effektif.workflow.impl.workflowinstance;
 
 import com.effektif.workflow.api.Configuration;
 import com.effektif.workflow.api.WorkflowEngine;
+import com.effektif.workflow.api.ext.ExecutionPojo;
+import com.effektif.workflow.api.ext.WorkflowConstants;
 import com.effektif.workflow.api.model.TriggerInstance;
 import com.effektif.workflow.api.model.WorkflowInstanceId;
 import com.effektif.workflow.api.query.WorkflowInstanceQuery;
@@ -61,6 +63,13 @@ public class WorkflowInstanceImpl extends ScopeInstanceImpl {
   public Long nextTimerInstanceId;
   public List<Job> jobs;
   public List<UnlockListener> unlockListeners;
+
+  //zhenghaibo 2018.4.8
+  private Map<String, List<ExecutionPojo>> execution;
+  private Integer externalFlow;
+  public String workflowName;
+  public String workflowDescription;
+  public String sourceWorkflowId;
 
   /**
    * local cache of the locked workflow instance for the purpose of the call
@@ -135,6 +144,12 @@ public class WorkflowInstanceImpl extends ScopeInstanceImpl {
     boolean isFirst = true;
     while (hasWork()) {
       ActivityInstanceImpl activityInstance = getNextWork();
+
+      //zhenghaibo 2018.4.8
+      if (Integer.parseInt(activityInstance.getId()) > WorkflowConstants.MAX_ACTIVITY_INSTANCES) {
+        throw new RuntimeException("workflow engine stopped,loop avoid.");
+      }
+
       ActivityImpl activity = activityInstance.getActivity();
       ActivityType activityType = activity.activityType;
 
@@ -531,5 +546,9 @@ public class WorkflowInstanceImpl extends ScopeInstanceImpl {
         });
       }
     }
+  }
+
+  public Map<String, List<ExecutionPojo>> getExecution() {
+    return execution;
   }
 }

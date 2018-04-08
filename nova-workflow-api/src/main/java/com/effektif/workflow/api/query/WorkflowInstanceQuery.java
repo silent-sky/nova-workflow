@@ -15,12 +15,12 @@
  */
 package com.effektif.workflow.api.query;
 
+import com.effektif.workflow.api.model.WorkflowId;
 import com.effektif.workflow.api.model.WorkflowInstanceId;
+import org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.joda.time.LocalDateTime;
 
 /**
  * @author Tom Baeyens
@@ -28,6 +28,9 @@ import org.joda.time.LocalDateTime;
 public class WorkflowInstanceQuery {
 
   public static final String FIELD_START = "start";
+
+  //zhenghaibo 2018.4.8
+  protected WorkflowId workflowId;
 
   protected WorkflowInstanceId workflowInstanceId;
   protected String activityId;
@@ -116,6 +119,19 @@ public class WorkflowInstanceQuery {
   }
   public WorkflowInstanceQuery lockedBefore(LocalDateTime dateTime) {
     this.lockedBefore = dateTime;
+    return this;
+  }
+
+  public WorkflowId getWorkflowId() {
+    return workflowId;
+  }
+
+  public void setWorkflowId(WorkflowId workflowId) {
+    this.workflowId = workflowId;
+  }
+
+  public WorkflowInstanceQuery workflowId(WorkflowId workflowId) {
+    this.workflowId = workflowId;
     return this;
   }
 }
